@@ -1,0 +1,25 @@
+version: '3'
+services:
+  contactApp:
+    image: contact
+    build: .
+    ports:
+      - "8888:8888"
+    restart: always
+    depends_on:
+      - contactDb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://contactDb:5432/contact
+      - SPRING_DATASOURCE_USERNAME=newuser
+      - SPRING_DATASOURCE_PASSWORD=12345
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SECURITY_JWT_SECRET_KEY=3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+  contactDb:
+    image: postgres:14.7
+    restart: always
+    ports:
+      - "5439:5432"
+    environment:
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_USER=newuser
+      - POSTGRES_DB=contact
